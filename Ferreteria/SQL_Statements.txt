@@ -1,0 +1,93 @@
+CREATE DATABASE ferreteria;
+
+CREATE TABLE usuario (
+    idUsuario INTEGER AUTO_INCREMENT NOT NULL,
+    nombre VARCHAR(60) NOT NULL,
+    usuario VARCHAR(20) NOT NULL,
+    contraseña VARCHAR(200) NOT NULL,
+    PRIMARY KEY (idUsuario)
+    );
+
+
+--------------------------------------------RECORDAR--------------------------------------------
+
+The salt is F3rr3c3j4
+
+The username by defect is AdminFerre
+which password is Admin22
+
+INSERT INTO usuario (nombre, usuario, contraseña) VALUES ('Admin','AdminFerre','7AA05DEAD3E392D8C7EF77E3162BE8ED');
+
+The username for Diego is diegocampuzano
+which password is Di3g0F3rr3
+
+INSERT INTO usuario (nombre, usuario, contraseña) VALUES ('Diego Alejandro Campuzano Botero','diegocampuzano','DBED74AFF196BB6CF2B52AC70EBCB061');
+
+The username for Felipe is juanbermudez
+which password is F3lip3F3rr3
+
+INSERT INTO usuario (nombre, usuario, contraseña) VALUES ('Juan Felipe Bermudez Bedoya','juanbermudez','529629C6B27C8FF9BD040BE976B7F225');
+
+------------------------------------------------------------------------------------------------
+
+----------------------------------------------TABLES--------------------------------------------
+
+//-------CATEGORIA--------
+CREATE TABLE categoria (
+	idCategoria INT AUTO_INCREMENT NOT NULL,
+	nombre VARCHAR(50) NOT NULL,
+	habilitado BOOLEAN NOT NULL,
+	PRIMARY KEY (idCategoria)
+) ENGINE = INNODB;
+
+//------MARCA-------
+CREATE TABLE marca (
+	idMarca INT AUTO_INCREMENT NOT NULL,
+	nombre VARCHAR(50) NOT NULL,
+	PRIMARY KEY (idMarca),
+	habilitado BOOLEAN NOT NULL
+) ENGINE = INNODB;
+
+//---------PRODUCTOS--------
+CREATE TABLE producto (
+	idProducto INT AUTO_INCREMENT NOT NULL,
+	nombre VARCHAR(50) NOT NULL,
+	precioVenta INT NOT NULL,
+	porcentajeMayoreo INT NOT NULL,
+	garantia BOOLEAN NOT NULL,
+	habilitado BOOLEAN NOT NULL,
+	idMarca INT NOT NULL,
+	idCategoria INT NOT NULL,
+	PRIMARY KEY (idProducto),
+	CONSTRAINT FOREIGN KEY (idMarca)
+	REFERENCES marca(idMarca)
+	ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FOREIGN KEY (idCategoria)
+	REFERENCES categoria(idCategoria)
+	ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = INNODB;
+
+//---------PROVEEDOR---------
+CREATE TABLE proveedor (
+	idProveedor INT AUTO_INCREMENT NOT NULL,
+	nit INT NOT NULL,
+	nombre VARCHAR(50) NOT NULL,
+	direccion VARCHAR(70),
+	telefono INT,
+	PRIMARY KEY (idProveedor)
+) ENGINE = INNODB;
+
+//-------ITEM-------
+CREATE TABLE item (
+	cantidad INT NOT NULL,
+	precioCompra INT NOT NULL,
+	idProducto INT NOT NULL,
+	idProveedor INT NOT NULL,
+	PRIMARY KEY (idProducto,idProveedor),
+	CONSTRAINT FOREIGN KEY (idProducto)
+	REFERENCES producto(idProducto)
+	ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FOREIGN KEY (idProveedor)
+	REFERENCES proveedor(idProveedor)
+	ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = INNODB;
